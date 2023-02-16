@@ -1,7 +1,7 @@
 local LatestVersion = "1.3.0"
 if getgenv()["Version"] ~= nil then
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/R00T66/nrl/main/Versions/" .. tostring(getgenv()["Version"]))()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/R00T66/nrl/main/Versions/" .. tostring(getgenv()["Version"])))()
    return
 else
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/R00T66/nrl/main/Versions/" .. tostring(LatestVersion))()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/R00T66/nrl/main/Versions/" .. tostring(LatestVersion)))()
 end
