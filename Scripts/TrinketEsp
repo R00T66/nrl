@@ -1,0 +1,149 @@
+local Gaia = {
+ ["PDR"] = {
+  ["Phoenix Down"] = "0 1 0.8 0 0 1 1 0.501961 0 0 ",
+  ["Azael Horn"] = "0 1 0.0392157 0.0392157 0 1 1 0.0392157 0.0392157 0 ",
+  ["Mysterious Artifact"] = "0 0.45098 1 0 0 1 0.482353 1 0 0 "
+ },
+ ["IER"] = {
+  ["Ice Essence"] = "0 0.0980392 0.72549 0.607843 0 1 0.0980392 0.72549 0.607843 0 ",
+  ["???"] = "0 0.596078 0 0.207843 0 1 0.596078 0 0.207843 0 ",
+  ["Spider Cloak"] = " "
+ }
+}
+
+local Khei = {
+ ["PDR"] = {
+  ["Phoenix Bloom"] = " "
+ }
+}
+
+local ESP_LIBRARY = "https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/ESP"
+local ArtifactEsp = loadstring(game:HttpGet(ESP_LIBRARY))()
+local DefineArtifact = function(self)
+   local Trinket = "undefined"
+   local Color = Color3.fromRGB(255, 255, 255)
+   
+   for i, v in pairs(self:GetDescendants()) do
+      if v:IsA("ParticleEmitter") then
+         if v.Texture == "rbxassetid://1536547385" then
+            for z, x in pairs(Gaia["PDR"]) do
+               if tostring(x) == tostring(v.Color) then
+                  Trinket = z
+                  Object = self
+                  if z == "Phoenix Down" then
+                     Color = Color3.fromRGB(255, 170, 0)
+                  end
+                  if z == "Azael Horn" then
+                     Color = Color3.fromRGB(255, 0, 0)
+                  end
+                  if z == "Mysterious Artifact" then
+                     Color = Color3.fromRGB(0, 255, 0)
+                  end
+               end
+            end
+            
+            if Trinket == "undefined" then
+               Trinket = "PDR [undefined]"
+            end
+         end
+         
+         if v.Texture == "rbxassetid://20443483" then
+            for z, x in pairs(Gaia["IER"]) do
+               if tostring(x) == tostring(v.Color) then
+                  Trinket = z 
+                  Object = self
+                  if z == "Ice Essence" then
+                     Color = Color3.fromRGB(0, 0, 100)
+                  end
+                  if z == "???" then
+                     Color = Color3.fromRGB(105, 15, 173)
+                  end
+               end
+            end
+            
+            if Trinket == "undefined" then
+                Trinket = "IER [undefined]"
+            end
+         end
+      end
+   end 
+
+   if self:IsA("UnionOperation") then
+      if self.Color == Color3.fromRGB(248, 248, 248) and not self:FindFirstChild("PointLight") then
+         Trinket = "Lannis's Amulet"
+         Object = self
+         Color = Color3.fromRGB(66, 148, 255)
+      end
+      if self.Color == Color3.fromRGB(248, 248, 248) and self:FindFirstChild("PointLight") then
+         Trinket = "Amulet of the White King"
+         Object = self
+         Color = Color3.fromRGB(242, 0, 242)    
+      end
+   end
+   
+   return Trinket,Color,Object,(Trinket == "undefined")
+end
+local ScrollEsp = loadstring(game:HttpGet(ESP_LIBRARY))()
+local DefineScroll = function(self)
+   if self:IsA("MeshPart") then
+      if self.MeshId == "rbxassetid://923469333" then
+         Trinket = "Candy"
+         Object = self
+         Color = self.Color
+      end
+      if self.MeshId == "rbxassetid://5204453430" then
+         Trinket = "Scroll"
+         Object = self
+         Color = self.Color
+      end
+   end
+end
+local CandyEsp = loadstring(game:HttpGet(ESP_LIBRARY))()
+local DefineCandy = function(self)
+   if self:IsA("MeshPart") then
+      if self.MeshId == "rbxassetid://923469333" then
+         Trinket = "Candy"
+         Object = self
+         Color = self.Color
+      end
+      if self.MeshId == "rbxassetid://5204453430" then
+         Trinket = "Scroll"
+         Object = self
+         Color = self.Color
+      end
+   end
+end
+
+local Setup = function(Path, Function, ESP)
+   Path.ChildAdded:Connect(function(self)
+       wait(1)
+       local TrinketName,TrinketColor,Trinket,Unknown = Function(self)
+
+       if not Unknown then
+          pcall(function(...)
+              ESP:Add(Trinket, {
+                Name = TrinketName, Color = TrinketColor
+              }) 
+              Trinket.Name = TrinketName
+          end) 
+       end
+   end)
+   for i, v in pairs(Path:GetChildren()) do
+       local TrinketName,TrinketColor,Trinket,Unknown = Function(v)
+       
+       if not Unknown then
+          pcall(function(...)
+              ESP:Add(Trinket, {
+                Name = TrinketName, Color = TrinketColor
+              }) 
+              Trinket.Name = TrinketName
+          end)
+       end
+   end
+end
+
+Setup(workspace.Trinkets, DefineArtifact, ArtifactEsp)
+Setup(workspace.Trinkets, DefineScrolls, ScrollEsp)
+Setup(workspace.Trinkets, DefineCandy, CandyEsp)
+
+return ArtifactEsp,ScrollEsp,CandyEsp
