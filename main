@@ -1,4 +1,4 @@
--- Functions
+-- Core Function
 
 local LoadFunction = function(Http)
    local Success, Response = pcall(game.HttpGet, game, Http)
@@ -18,8 +18,14 @@ local LoadFunction = function(Http)
    end
 end
 
+-- ///
+
+local ModDetector = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/ModDetector")
+local TeleportHandler = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/TeleportHandler")
 local Artifacts,Scrolls,Candy,EspEnabled = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/TrinketESP")
 local AutoPickup = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoPickup")
+local AutoSell = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoSell")
+local Areas = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AreaTeleports")
 
 -- Gui
 
@@ -33,7 +39,8 @@ local TrinketSection2 = Carbon.addCategory(TrinketTab, (" Auto Pickup "), true)
 local TrinketSection3 = Carbon.addCategory(TrinketTab, (" Auto Sell "), true)
 
 local TeleportTab = Carbon.addTab(Window, "Teleports")
-local TeleportSection = Carbon.addCategory(TeleportTab, (" "), true)
+local TeleportSection1 = Carbon.addCategory(TeleportTab, ("Custom"), true)
+local TeleportSection2 = Carbon.addCategory(TeleportTab, ("Areas"), true)
 
 local HealerTab = Carbon.addTab(Window, "Healer")
 local HealerSection1 = Carbon.addCategory(HealerTab, (" Rotting "), true)
@@ -81,8 +88,26 @@ end)
 -- Auto Sell
 
 Carbon.addButton(TrinketSection3, "Auto Sell", function(self)
-    print("!")
+    AutoSell()
 end)
+
+-- Custom Teleports
+
+-- Area Teleports
+
+for i, v in pairs(Areas) do
+   Carbon.addButton(TeleportSection2, tostring(i), function(self)
+       local Boolean = TeleportHandler.Teleport(v)
+       
+       if not Boolean then
+          game.StarterGui:SetCore("SendNotification", {
+            Title = "ERROR",
+            Text = "MUST GATE FIRST!",
+            Duration = 5
+          })
+       end
+   end)
+end
 
 -- Rotting
 
