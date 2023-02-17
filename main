@@ -1,0 +1,115 @@
+-- Functions
+
+local LoadFunction = function(Http)
+   local Success, Response = pcall(game.HttpGet, game, Http)
+   
+   if Success then
+      if Response == "load fail" then
+         game.StarterGui:SetCore("SendNotification", {
+           Title = "ERROR",
+           Text = "CORE FAILURE, SCRIPT CANNOT LOAD!",
+           Duration = 5
+         })
+         while true do wait() end
+         return {}
+      else
+         return loadstring(Response)()
+      end
+   end
+end
+
+local Artifacts,Scrolls,Candy,EspEnabled = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/TrinketESP")
+local AutoPickup = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoPickup")
+
+-- Gui
+
+local Carbon = loadstring(game:HttpGet("https://raw.githubusercontent.com/R00T66/carbon_backup/main/carbonui.lua"))()
+
+local Window = Carbon.new(580, 300, "GUI | Not Rogue Lineage")
+
+local TrinketTab = Carbon.addTab(Window, "Trinkets")
+local TrinketSection1 = Carbon.addCategory(TrinketTab, (" Trinket ESP "), true)
+local TrinketSection2 = Carbon.addCategory(TrinketTab, (" Auto Pickup "), true)
+local TrinketSection3 = Carbon.addCategory(TrinketTab, (" Auto Sell "), true)
+
+local TeleportTab = Carbon.addTab(Window, "Teleports")
+local TeleportSection = Carbon.addCategory(TeleportTab, (" "), true)
+
+local HealerTab = Carbon.addTab(Window, "Healer")
+local HealerSection1 = Carbon.addCategory(HealerTab, (" Rotting "), true)
+local HealerSection2 = Carbon.addCategory(HealerTab, (" Potions "), true)
+local HealerSection3 = Carbon.addCategory(HealerTab, (" Teleports "), true)
+
+local MiscTab = Carbon.addTab(Window, "Misc")
+local MiscSection = Carbon.addCategory(MiscTab, (" "), true)
+
+-- Trinket ESP
+
+Carbon.addToggle(TrinketSection1, "Enabled", function(self)
+    EspEnabled = self
+    if not self then
+       Artifacts:Toggle(false)
+       Scrolls:Toggle(false)
+       Candy:Toggle(false)
+    end
+end)
+
+Carbon.addToggle(TrinketSection1, "Show Artifacts", function(self)
+    repeat wait() until EspEnabled
+    Artifacts:Toggle(self)
+end)
+
+Carbon.addToggle(TrinketSection1, "Show Scrolls", function(self)
+    repeat wait() until EspEnabled
+    Scrolls:Toggle(self)
+end)
+
+Carbon.addToggle(TrinketSection1, "Show Candy", function(self)
+    repeat wait() until EspEnabled
+    Candy:Toggle(self)
+end)
+
+-- Auto Pickup
+
+Carbon.addToggle(TrinketSection2, "Enabled", function(self)
+    AutoPickup.Enabled = self
+    if self then
+       AutoPickup.Refresh()
+    end
+end)
+
+-- Auto Sell
+
+Carbon.addButton(TrinketSection3, "Auto Sell", function(self)
+    print("!")
+end)
+
+-- Rotting
+
+Carbon.addButton(HealerSection1, "Rot Self", function(self)
+    print("!")
+end)
+
+Carbon.addInput(HealerSection1, "Rot Target", function(self)
+    print("!")
+end)
+
+-- Potions
+
+Carbon.addButton(HealerSection2, "Auto Health Potion", function(self)
+    print("!")
+end)
+
+Carbon.addButton(HealerSection2, "Auto Health Potion Drink", function(self)
+    print("!")
+end)
+
+-- Teleports (Healer)
+
+Carbon.addButton(HealerSection3, "Super Class", function(self)
+    print("!")
+end)
+
+Carbon.addButton(HealerSection3, "Ultra Class", function(self)
+    print("!")
+end)
