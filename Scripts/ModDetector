@@ -20,7 +20,7 @@ local MOD_DETECT_JOIN = function(self)
          Sound:Play()
          game.StarterGui:SetCore("SendNotification", {
            Title = "ALERT",
-           Text = "MODERATOR JOINED! (" .. tostring(self.Name) .. ")",
+           Text = "MODERATOR JOINED (" .. tostring(self.Name) .. ")",
            Duration = 20
          })
          coroutine.resume(coroutine.create(function()
@@ -49,7 +49,7 @@ local MOD_DETECT_LEAVE = function(self)
       Sound:Play()
       game.StarterGui:SetCore("SendNotification", {
         Title = "ALERT",
-        Text = "MODERATOR LEFT! (" .. tostring(self.Name) .. ")",
+        Text = "MODERATOR LEFT (" .. tostring(self.Name) .. ")",
         Duration = 20
       })
       coroutine.resume(coroutine.create(function()
