@@ -1,0 +1,13 @@
+local Handler = { }
+
+Handler.Teleport = function(self)
+   if game.Players.LocalPlayer.Character then
+      if game.Players.LocalPlayer.Character:FindFirstChild("TPSafe") then
+         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = self
+         return true
+      end
+   end
+   return false
+end
+
+return Handler
