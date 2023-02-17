@@ -10,14 +10,31 @@ pcall(function()
     local TrinketAP             = true;
     shared.Enabled              = true; 
     shared.Blacklist            = shared.Blacklist or {};
-     
+    shared.Refresh              = function();
+       for i, v in pairs(workspace.Trinkets:GetDescendants()) do
+          if v.ClassName == 'ClickDetector' and (v.Parent.Name == "ClickPart") then
+             table.insert(Clickables, v.Parent);
+             table.insert(Trinkets, v.Parent);
+             TP[tostring(v.Parent.Position)] = v;
+          end
+       end    
+    end
+    
     local Clickables = {};
     local TP = {};
     local Trinkets = {};
     
     repeat wait() until workspace:FindFirstChild("Trinkets")
     repeat wait() until #workspace.Trinkets:GetChildren() > 100
-     
+    
+    for i, v in pairs(workspace.Trinkets:GetDescendants()) do
+        if v.ClassName == 'ClickDetector' and (v.Parent.Name == "ClickPart") then
+            table.insert(Clickables, v.Parent);
+            table.insert(Trinkets, v.Parent);
+            TP[tostring(v.Parent.Position)] = v;
+        end
+    end
+    
     if shared.WSDC then shared.WSDC:disconnect(); end
      
     shared.WSDC = workspace.DescendantAdded:connect(function(child)
