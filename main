@@ -13,7 +13,7 @@ local LoadFunction = function(Http)
          while true do wait() end
          return {}
       else
-         local load_success,load_response = pcall(loadstring(Response))
+         local load_success,load_response,e1,e2,e3 = pcall(loadstring(Response))
          
          if not load_success then
             game.StarterGui:SetCore("SendNotification", {
@@ -25,7 +25,7 @@ local LoadFunction = function(Http)
             while true do wait() end
             return {}
          else
-            return load_response
+            return load_response,e1,e2,e3
          end
       end
    end
@@ -38,7 +38,9 @@ local TeleportHandler = LoadFunction("https://raw.githubusercontent.com/R00T66/n
 local Artifacts,Scrolls,Candy,EspEnabled = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/TrinketESP")
 local AutoPickup = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoPickup")
 local AutoSell = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoSell")
+local Rejoin = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/Rejoin")
 local Areas = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AreaTeleports")
+local Wipe = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/Wipe")
 
 -- Gui
 
@@ -110,8 +112,10 @@ end)
 
 for i, v in pairs(Areas) do
    Carbon.addButton(TeleportSection2, tostring(i), function(self)
+       AutoPickup.Enabled = false
        local Boolean = TeleportHandler.Teleport(v)
-       
+       wait(2)
+       AutoPickup.Enabled = true
        if not Boolean then
           game.StarterGui:SetCore("SendNotification", {
             Title = "ERROR",
@@ -150,4 +154,14 @@ end)
 
 Carbon.addButton(HealerSection3, "Ultra Class", function(self)
     print("!")
+end)
+
+-- Misc
+
+Carbon.addButton(MiscSection, "Rejoin", function(self)
+    Rejoin()
+end)
+
+Carbon.addButton(MiscSection, "Wipe", function(self)
+    Wipe()
 end)
