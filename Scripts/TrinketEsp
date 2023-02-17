@@ -146,4 +146,4 @@ Setup(workspace.Trinkets, DefineArtifact, ArtifactEsp)
 Setup(workspace.Trinkets, DefineScrolls, ScrollEsp)
 Setup(workspace.Trinkets, DefineCandy, CandyEsp)
 
-return ArtifactEsp,ScrollEsp,CandyEsp
+return ArtifactEsp,ScrollEsp,CandyEsp,false
