@@ -100,6 +100,8 @@ local DefineScroll = function(self)
          Color = self.Color
       end
    end
+   
+   return Trinket,Color,Object,(Trinket == "undefined")
 end
 local CandyEsp = loadstring(game:HttpGet(ESP_LIBRARY))()
 local DefineCandy = function(self)
@@ -118,6 +120,8 @@ local DefineCandy = function(self)
          Color = self.Color
       end
    end
+   
+   return Trinket,Color,Object,(Trinket == "undefined")
 end
 
 local Setup = function(Path, Function, ESP)
