@@ -10,7 +10,7 @@ end
 
 local Rot = {["Target"] = nil}
 
-Rot.GetTarget(String)
+Rot.GetTarget = function(String)
    local Player = GetPlayer(tostring(String))
    
    if Player ~= nil then
