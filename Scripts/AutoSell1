@@ -38,12 +38,12 @@ local AutoSellFunction = function()
                 v.Parent = game.Players.LocalPlayer.Character
                 fireclickdetector(CD)
                 Dialogue:FireServer({["choice"] = "Could you appraise this for me?"})
-                wait()
+                wait(.150)
                 Dialogue:FireServer({["choice"] = "It's a deal."})
             end
         end
         v.Parent = game.Players.LocalPlayer.Backpack
-        wait(.250)
+        wait()
     end
     return true
 end
