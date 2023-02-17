@@ -1,0 +1,6 @@
+local CreateFrame = function(x, y, z)
+   return CFrame.new(Vector3.new(x, y, z))
+end; return {
+ ["Spatial Anomaly"] = CreateFrame(-4529, 64638, -14827),
+ ["Safe Area"] = CreateFrame(5261, 1757, -382)
+}
