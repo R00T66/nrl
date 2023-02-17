@@ -72,7 +72,7 @@ pcall(function()
     RunService:UnbindFromRenderStep'NOL';
      
     RunService:BindToRenderStep('NOL', 0, function()
-        if shared.Enable and tick() - LastCheck > 1 / 8 then
+        if shared.Enabled and tick() - LastCheck > 1 / 8 then
             LastCheck     = tick();
             NearestObject = GetNearestObject();
         end
