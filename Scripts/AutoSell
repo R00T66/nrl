@@ -1,0 +1,68 @@
+local AutoSell = false
+
+local NearestMerchant = function()
+    local Distance = 999999
+    local Closest = nil
+    for i, v in pairs(workspace.NPCs:GetChildren()) do
+        if v.Name == "Merchant" then
+            local Studs = (v.Torso.Position - game.Players.LocalPlayer.Character.Torso.Position).magnitude
+
+            if Distance > Studs then
+                Distance = Studs
+                Closest = v
+            end
+        end
+    end
+    return Closest
+end
+
+local ValidSell = function(self)
+    local Names = {"scroll of", "artifact", "candy", "phoenix"}
+    local V = false
+    for i, v in pairs(Names) do
+        if self:lower():find(v) then
+            V = true
+        end
+    end
+    return V
+end
+
+local AutoSellFunction = function()
+    local Merchant = NearestMerchant()
+    local Dialogue = game:GetService("ReplicatedStorage"):WaitForChild("Requests").Dialogue
+    for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+        local CD = Merchant.ClickDetector
+
+        if v:IsA("Tool") then
+            if ValidSell(v.Name:lower()) then
+                v.Parent = game.Players.LocalPlayer.Character
+                fireclickdetector(CD)
+                Dialogue:FireServer({["choice"] = "Could you appraise this for me?"})
+                wait()
+                Dialogue:FireServer({["choice"] = "It's a deal."})
+            end
+        end
+        v.Parent = game.Players.LocalPlayer.Backpack
+        wait(.250)
+    end
+    return true
+end
+
+local Function = function()
+   if AutoSell then
+      return
+   end
+   AutoSell = false
+   local Success, Response = pcall(AutoSellFunction)
+   repeat wait() until not Success or Response ~= nil
+   if not Success then
+      AutoSell = false
+      return false
+   end
+   if Success then
+      AutoSell = false
+      return true
+   end
+end
+
+return Function
