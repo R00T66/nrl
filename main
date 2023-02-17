@@ -1,4 +1,4 @@
--- Core Function
+-- Core Functions
 
 local LoadFunction = function(Http)
    local Success, Response = pcall(game.HttpGet, game, Http)
@@ -35,9 +35,12 @@ end
 
 local ModDetector = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/ModDetector")
 local TeleportHandler = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/TeleportHandler")
+local CustomAreas = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/CustomTeleports")
 local Artifacts,Scrolls,Candy,EspEnabled = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/TrinketESP")
+local AutoHealthPot = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoHealthPot")
 local AutoPickup = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoPickup")
 local AutoSell = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoSell")
+local RotSelf = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/RotSelf")
 local Rejoin = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/Rejoin")
 local Areas = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AreaTeleports")
 local Wipe = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/Wipe")
@@ -108,6 +111,21 @@ end)
 
 -- Custom Teleports
 
+for i, v in pairs(CustomAreas) do
+   Carbon.addButton(TeleportSection1, tostring(i), function(self)
+       AutoPickup.Enabled = false
+       local Boolean = TeleportHandler.Teleport(v)
+       wait(2)
+       AutoPickup.Enabled = true
+       if not Boolean then
+          game.StarterGui:SetCore("SendNotification", {
+            Title = "ERROR",
+            Text = "MUST GATE FIRST!",
+            Duration = 5
+          })
+       end
+   end)
+end
 -- Area Teleports
 
 for i, v in pairs(Areas) do
@@ -139,7 +157,7 @@ end)
 -- Potions
 
 Carbon.addButton(HealerSection2, "Auto Health Potion", function(self)
-    print("!")
+    AutoHealthPot()
 end)
 
 Carbon.addButton(HealerSection2, "Auto Health Potion Drink", function(self)
@@ -149,11 +167,11 @@ end)
 -- Teleports (Healer)
 
 Carbon.addButton(HealerSection3, "Super Class", function(self)
-    print("!")
+    TeleportHandler.Teleport(CFrame.new(Vector3.new(-422.22674560546875, 270.4999084472656, 1041.569091796875)))
 end)
 
 Carbon.addButton(HealerSection3, "Ultra Class", function(self)
-    print("!")
+    TeleportHandler.Teleport(CFrame.new(Vector3.new(6095.8310546875, 1416.49365234375, 126.3079605102539)))
 end)
 
 -- Misc
