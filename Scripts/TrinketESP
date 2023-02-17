@@ -89,11 +89,6 @@ local DefineScroll = function(self)
    local Color = Color3.fromRGB(255, 255, 255)
    
    if self:IsA("MeshPart") then
-      if self.MeshId == "rbxassetid://923469333" then
-         Trinket = "Candy"
-         Object = self
-         Color = self.Color
-      end
       if self.MeshId == "rbxassetid://5204453430" then
          Trinket = "Scroll"
          Object = self
@@ -111,11 +106,6 @@ local DefineCandy = function(self)
    if self:IsA("MeshPart") then
       if self.MeshId == "rbxassetid://923469333" then
          Trinket = "Candy"
-         Object = self
-         Color = self.Color
-      end
-      if self.MeshId == "rbxassetid://5204453430" then
-         Trinket = "Scroll"
          Object = self
          Color = self.Color
       end
