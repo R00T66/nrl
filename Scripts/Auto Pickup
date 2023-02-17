@@ -8,7 +8,7 @@ pcall(function()
     local LastObject            = NearestObject;
     local LastCheck             = 0;
     local TrinketAP             = true;
-    shared.Enable               = true; 
+    shared.Enabled              = true; 
     shared.Blacklist            = shared.Blacklist or {};
      
     local Clickables = {};
@@ -61,5 +61,5 @@ pcall(function()
         end
     end)
     
-    return shared.Enable
+    return shared
 end)
