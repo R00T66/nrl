@@ -1,4 +1,8 @@
 local Success, Response, Extra = pcall(function()
+    local Clickables = {};
+    local TP = {};
+    local Trinkets = {};
+    
     local Players               = game:GetService'Players';
     local LocalPlayer           = Players.LocalPlayer;
     local Camera                = workspace.CurrentCamera;
@@ -19,10 +23,6 @@ local Success, Response, Extra = pcall(function()
           end
        end    
     end
-    
-    local Clickables = {};
-    local TP = {};
-    local Trinkets = {};
     
     repeat wait() until workspace:FindFirstChild("Trinkets")
     repeat wait() until #workspace.Trinkets:GetChildren() > 100
