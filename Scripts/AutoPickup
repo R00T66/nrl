@@ -1,0 +1,65 @@
+pcall(function()
+    local Players               = game:GetService'Players';
+    local LocalPlayer           = Players.LocalPlayer;
+    local Camera                = workspace.CurrentCamera;
+    local RunService            = game:GetService'RunService';
+    local UIS                   = game:GetService'UserInputService';
+    local NearestObject         = nil;
+    local LastObject            = NearestObject;
+    local LastCheck             = 0;
+    local TrinketAP             = true;
+    shared.Enable               = true; 
+    shared.Blacklist            = shared.Blacklist or {};
+     
+    local Clickables = {};
+    local TP = {};
+    local Trinkets = {};
+    
+    repeat wait() until workspace:FindFirstChild("Trinkets")
+    repeat wait() until #workspace.Trinkets:GetChildren() > 100
+     
+    if shared.WSDC then shared.WSDC:disconnect(); end
+     
+    shared.WSDC = workspace.DescendantAdded:connect(function(child)
+        if (child:IsA'BasePart' or child:IsA'UnionOperation') and wait(1 / 3) then
+            if child:FindFirstChildOfClass'ClickDetector' then
+                table.insert(Clickables, child);
+                TP[tostring(child.Position)] = child:FindFirstChildOfClass'ClickDetector';
+            end
+            if TP[tostring(child.Position)] ~= nil then
+                table.insert(Trinkets, child);
+            end
+        end
+    end);
+     
+    function GetNearestObject()
+        if #Trinkets < 1 then return false; end
+     
+        local Closest = Trinkets[math.random(#Trinkets)];
+        local Distance = (Camera.CFrame.p - Closest.Position).magnitude;
+     
+        for i, v in pairs(Trinkets) do
+            local LDistance = (Camera.CFrame.p - v.Position).magnitude;
+            if TrinketAP and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild'Head' and (LocalPlayer.Character.Head.Position - v.Position).magnitude <= 15 and TP[tostring(v.Position)] then
+                fireclickdetector(TP[tostring(v.Position)]);
+            end
+            if LDistance < Distance and not shared.Blacklist[v] and v:IsDescendantOf(workspace) then
+                Distance = LDistance;
+                Closest = v;
+            end
+        end
+     
+        return Closest;
+    end
+     
+    RunService:UnbindFromRenderStep'NOL';
+     
+    RunService:BindToRenderStep('NOL', 0, function()
+        if shared.Enable and tick() - LastCheck > 1 / 8 then
+            LastCheck     = tick();
+            NearestObject = GetNearestObject();
+        end
+    end)
+    
+    return shared.Enable
+end)
