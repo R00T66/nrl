@@ -38,7 +38,7 @@ local AutoSellFunction = function()
                 v.Parent = game.Players.LocalPlayer.Character
                 fireclickdetector(CD)
                 Dialogue:FireServer({["choice"] = "Could you appraise this for me?"})
-                wait()
+                wait(.150)
                 Dialogue:FireServer({["choice"] = "It's a deal."})
             end
         end
@@ -52,7 +52,7 @@ local Function = function()
    if AutoSell then
       return
    end
-   AutoSell = false
+   AutoSell = true
    local Success, Response = pcall(AutoSellFunction)
    repeat wait() until not Success or Response ~= nil
    if not Success then
