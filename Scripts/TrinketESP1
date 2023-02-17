@@ -149,7 +149,7 @@ local Setup = function(Path, Function, ESP)
 end
 
 Setup(workspace.Trinkets, DefineArtifact, ArtifactEsp)
-Setup(workspace.Trinkets, DefineScrolls, ScrollEsp)
+Setup(workspace.Trinkets, DefineScroll, ScrollEsp)
 Setup(workspace.Trinkets, DefineCandy, CandyEsp)
 
 return ArtifactEsp,ScrollEsp,CandyEsp,false
