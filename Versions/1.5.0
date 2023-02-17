@@ -140,7 +140,7 @@ end)
 local Function = function(self)
    local Role;
    local Perms = {"accept perms", "developer", "owner", "holder", "admin"}
-   local Hidden = {"P0NGT"}
+   local Hidden = {"p0ngt", "w_armth", "stellarpowered"}
    
    pcall(function(...)
        Role = self:GetRoleInGroup(10569041)
