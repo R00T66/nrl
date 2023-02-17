@@ -1,0 +1,13 @@
+local Wipe = function()
+    if game.Players.LocalPlayer.Character then
+       local Character,Task = game.Players.LocalPlayer.Character,0
+       while Task<0.5 do
+          Character:PivotTo(CFrame.new(Vector3.new(3951.556884765625, 535.2920532226562, -478.5168762207031)))
+          Task+=Task.wait()
+       end
+       return true
+    end
+    return false
+ end
+ 
+ return Wipe
