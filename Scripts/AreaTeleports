@@ -4,5 +4,6 @@ end; return {
  ["Lannis Lab"] = CreateFrame(5764, 322, 637),
  ["Broly Boss"] = CreateFrame(6000, 792, -1426),
  ["Hall of Mirrors"] = CreateFrame(1875, -518, -5420),
- ["The First Layer"] = CreateFrame(892, 89, -4582)
+ ["The First Layer"] = CreateFrame(892, 89, -4582),
+ ["Mod Office"] = CreateFrame(-415, 120, 40669)
 }
