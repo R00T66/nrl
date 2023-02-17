@@ -1,0 +1,182 @@
+repeat wait() until game.IsLoaded
+repeat wait() until game.Players.LocalPlayer
+
+if game.PlaceId ~= 11412701341 then
+   return
+end
+
+local Accn = getgenv()["UserID"] or {}
+local Slot = getgenv()["Slot"] or 1
+local Hook = getgenv()["Hook"] or "..."
+local SpawnedIn = false
+local SlotPicked = false
+
+if type(Accn) == "table" then
+   local V = false
+   for i, v in pairs(Accn) do
+      if game.Players.LocalPlayer.UserId == v then
+         V = true
+      end
+   end
+   if not V then
+      return
+   end
+end
+
+if type(Accn) ~= "table" then
+   if game.Players.LocalPlayer.UserId ~= Accn then
+      return
+   end
+end
+
+if type(Slot) ~= "table" then
+   Slot = 1
+end
+
+if type(Slot) == "table" then
+   if Slot[game.Players.LocalPlayer.UserId] ~= nil then
+       Slot = Slot[game.Players.LocalPlayer.UserId]
+   else
+       Slot = 1
+   end
+end
+
+local GetSilver = function()
+   local SilverVal = game:GetService("Players").LocalPlayer.PlayerGui.CurrencyGui.Silver.Value.Text:gsub(",", "")
+   local Silver = tonumber(SilverVal)
+   
+   return Silver
+end
+
+local GemGacha = function()
+   repeat wait() until game.Players.LocalPlayer.Character
+   repeat wait() until game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+   wait()
+   local NPCS = game:GetService("Workspace"):WaitForChild("NPCs")
+   local Xena = NPCS:WaitForChild("Xena")
+   local Click = Xena:WaitForChild("ClickDetector")
+   local Requests = game:GetService("ReplicatedStorage"):WaitForChild("Requests")
+   local Dialogue = Requests:WaitForChild("Dialogue")
+   local Silv = GetSilver()
+   
+   warn("Silver Rolling With:", Silv)
+   
+   if Silv < 250 then
+      return "Shortage"
+   end
+   
+   c,t,h=game.Players.LocalPlayer.Character,0,game.Players.LocalPlayer.Character.Humanoid;
+   while t<0.5 do 
+       c:PivotTo(Xena.Torso.CFrame * CFrame.new(0, 0, 0));
+       fireclickdetector(Click);
+       Dialogue:FireServer({["choice"] = "Sure, I'll pay."});
+       t+=task.wait()
+   end  
+   return true
+end
+
+local Hop = function()
+    local ToServer = game.ReplicatedStorage.Requests.toServer
+    local Servers = game.ReplicatedStorage.Servers
+    local Valid = { }
+    
+    for i, v in pairs(Servers:GetChildren()) do
+       if v.JobId.Value ~= game.JobId then
+          Valid[#Valid + 1] = v.Name
+       end
+    end
+    
+    while true do 
+       wait()
+       ToServer:FireServer(Valid[math.random(1, #Valid)])
+    end
+end
+
+game.ReplicatedStorage:WaitForChild("Requests"):WaitForChild("DaysSurvivedChanged").OnClientEvent:Connect(function(day)
+    local ChildAdded;
+    local GotRoll = false
+    ChildAdded = game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(self)
+        warn("Rolled", tostring(self.Name))
+        if getgenv()["Hook"] then
+           syn.request({
+             Url = getgenv()["Hook"],
+             Method = "POST",
+             Headers = {["Content-Type"] = "application/json"},
+             Body = game:GetService("HttpService"):JSONEncode({content = tostring(game.Players.LocalPlayer.Name .. " Rolled " .. self.Name .. " At Day " .. day)})
+           })
+        end
+        GotRoll = true
+        ChildAdded:Disconnect()
+    end)
+    local Response = GemGacha(self)
+    if Response == "Shortage" then
+       ChildAdded:Disconnect()
+       game.Players.LocalPlayer:Kick("Silver Shortage")
+    end
+    wait(5)
+    if not GotRoll then
+       repeat wait()
+        GemGacha(self)
+       until GotRoll == true
+    end
+    ChildAdded:Disconnect()
+end)
+
+game.RunService.RenderStepped:Connect(function(self)
+    if game.Players.LocalPlayer.PlayerGui:FindFirstChild("Slots") then
+       if not SlotPicked then
+          repeat wait()
+              game:GetService("ReplicatedStorage").Requests.SlotData:FireServer(Slot)
+          until not game.Players.LocalPlayer.PlayerGui:FindFirstChild("Slots")
+       end
+    end
+    if game.Players.LocalPlayer.PlayerGui:FindFirstChild("StartMenu") then
+       if not SpawnedIn then
+          game.Players.LocalPlayer.PlayerGui:FindFirstChild("StartMenu").Finish:FireServer()
+       end
+    end
+end)
+
+local Function = function(self)
+   local Role;
+   local Perms = {"accept perms", "developer", "owner", "holder", "admin"}
+   local Hidden = {"P0NGT"}
+   
+   pcall(function(...)
+       Role = self:GetRoleInGroup(10569041)
+   end)
+   
+   if table.find(Hidden, self.Name:lower()) then
+      Role = "admin"
+   end
+   
+   if Role ~= nil then
+      local ModName = self.Name
+      local RoleName = Role:upper()
+      if table.find(Perms, Role:lower())  then
+         local Sound = Instance.new("Sound")
+         Sound.SoundId = "rbxassetid://1283290053"
+         Sound.Volume = 5
+         Sound.Parent = game.CoreGui
+         Sound:Play()
+         coroutine.resume(coroutine.create(function()
+             wait(5)
+             Sound:Destroy()
+         end))
+         Hop()
+      end
+   end
+end
+
+local AdminCheck = function(self)
+   local Func = coroutine.create(Function)
+   coroutine.resume(Func, self)
+end
+
+game:GetService("Players").PlayerAdded:Connect(AdminCheck)
+for i, Player in pairs(game:GetService("Players"):GetPlayers()) do 
+    AdminCheck(Player)
+end
+
+GemGacha()
+warn("\nEnchant Gacha Bot\nVersion | 1.3.0\nHook | " .. tostring(Hook) .. "\nSlot | " .. tostring(Slot) .. "\nAccount | " .. tostring(game.Players.LocalPlayer.Name))
