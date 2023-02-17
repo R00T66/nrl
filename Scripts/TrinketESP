@@ -85,6 +85,9 @@ local DefineArtifact = function(self)
 end
 local ScrollEsp = loadstring(game:HttpGet(ESP_LIBRARY))()
 local DefineScroll = function(self)
+   local Trinket = "undefined"
+   local Color = Color3.fromRGB(255, 255, 255)
+   
    if self:IsA("MeshPart") then
       if self.MeshId == "rbxassetid://923469333" then
          Trinket = "Candy"
@@ -100,6 +103,9 @@ local DefineScroll = function(self)
 end
 local CandyEsp = loadstring(game:HttpGet(ESP_LIBRARY))()
 local DefineCandy = function(self)
+   local Trinket = "undefined"
+   local Color = Color3.fromRGB(255, 255, 255)
+   
    if self:IsA("MeshPart") then
       if self.MeshId == "rbxassetid://923469333" then
          Trinket = "Candy"
