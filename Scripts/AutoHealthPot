@@ -1,3 +1,4 @@
+local Potting = false
 local GetNearestPot = function()
     local Stations = game:GetService("Workspace").Stations
     local Distance = 99999
@@ -19,6 +20,12 @@ local GetNearestPot = function()
 end
 
 local HealthPot = function()
+    if Potting then
+       return
+    end
+    
+    Potting = true
+    
     local Lava = nil
     local Scroom1 = nil
     local Scroom2 = nil
@@ -67,8 +74,8 @@ local HealthPot = function()
 
         fireclickdetector(Closest.Parent.Ladle.ClickConcoct)
     end
-
-    return false
+    Potting = false
+    return true
 end
 
 return HealthPot
