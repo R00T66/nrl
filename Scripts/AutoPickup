@@ -8,7 +8,7 @@ local Success, Response, Extra = pcall(function()
     local LastObject            = NearestObject;
     local LastCheck             = 0;
     local TrinketAP             = true;
-    shared.Enabled              = true; 
+    shared.Enabled              = false; 
     shared.Blacklist            = shared.Blacklist or {};
     shared.Refresh              = function()
        for i, v in pairs(workspace.Trinkets:GetDescendants()) do
