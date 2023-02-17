@@ -1,0 +1,74 @@
+local GetNearestPot = function()
+    local Stations = game:GetService("Workspace").Stations
+    local Distance = 99999
+    local Closest = nil
+    local Root = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+    for i, v in pairs(Stations:GetChildren()) do
+        if v:FindFirstChild("Water") then
+            local DistanceFromRoot = (Root.Position - v.Water.Position).magnitude
+
+            if Distance > DistanceFromRoot then
+                Distance = DistanceFromRoot
+                Closest = v.Water
+            end
+        end
+    end
+
+    return Closest
+end
+
+local HealthPot = function()
+    local Lava = nil
+    local Scroom1 = nil
+    local Scroom2 = nil
+    local Closest = GetNearestPot()
+
+    if Closest == nil then
+        return false
+    end
+
+    if game.Players.LocalPlayer.Backpack:FindFirstChild("Lava Flower") then
+        Lava = game.Players.LocalPlayer.Backpack:FindFirstChild("Lava Flower")
+    end
+
+    if game.Players.LocalPlayer.Backpack:FindFirstChild("Scroom") then
+        Scroom2 = game.Players.LocalPlayer.Backpack:FindFirstChild("Scroom")
+        Scroom2.Name = "Scroom2"
+    end
+
+    if game.Players.LocalPlayer.Backpack:FindFirstChild("Scroom") then
+        Scroom1 = game.Players.LocalPlayer.Backpack:FindFirstChild("Scroom")
+        Scroom1.Name = "Scroom1"
+    end
+
+    if Scroom1 ~= nil and Scroom2 ~= nil and Lava ~= nil then
+        local LavaRemote = Lava:WaitForChild("RemoteEvent")
+        local ScroomRemote1 = Scroom1:WaitForChild("RemoteEvent")
+        local ScroomRemote2 = Scroom2:WaitForChild("RemoteEvent")
+
+        Lava.Parent = game.Players.LocalPlayer.Character
+        wait()
+        LavaRemote:FireServer(Closest.CFrame, Closest)
+
+        wait(.250)
+
+        Scroom1.Parent = game.Players.LocalPlayer.Character
+        wait()
+        ScroomRemote1:FireServer(Closest.CFrame, Closest)
+
+        wait(.250)
+
+        Scroom2.Parent = game.Players.LocalPlayer.Character
+        wait()
+        ScroomRemote2:FireServer(Closest.CFrame, Closest)
+
+        wait(.250)
+
+        fireclickdetector(Closest.Parent.Ladle.ClickConcoct)
+    end
+
+    return false
+end
+
+return HealthPot
