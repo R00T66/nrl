@@ -41,7 +41,7 @@ local AutoSellFunction = function()
                 wait(.250)
                 Dialogue:FireServer({["choice"] = "It's a deal."})
                 wait()
-                Dialogue:FireServer({["choice"] = "Bye."})
+                Dialogue:FireServer({["choice"] = "Bye"})
             end
         end
         v.Parent = game.Players.LocalPlayer.Backpack
