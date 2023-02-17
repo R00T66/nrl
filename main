@@ -13,7 +13,20 @@ local LoadFunction = function(Http)
          while true do wait() end
          return {}
       else
-         return loadstring(Response)()
+         local load_success,load_response = pcall(loadstring(Response))
+         
+         if not load_success then
+            game.StarterGui:SetCore("SendNotification", {
+              Title = "ERROR",
+              Text = "CORE FAILURE, SCRIPT CANNOT LOAD! [" .. Http:gsub([[https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/]], "") .. "]",
+              Duration = 5
+            })
+            warn(Response, "\n\n=error " .. load_response)
+            while true do wait() end
+            return {}
+         else
+            return load_response
+         end
       end
    end
 end
