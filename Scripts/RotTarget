@@ -1,0 +1,21 @@
+local GetPlayer = function(s)
+    s = s:lower()
+    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+        if s == player.Name:lower():sub(1, #s) or s == player.DisplayName:lower():sub(1, #s) then
+            return player
+        end
+    end
+    return nil
+end
+
+local Rot = {["Target"] = nil}
+
+Rot.GetTarget(String)
+   local Player = GetPlayer(tostring(String))
+   
+   if Player ~= nil then
+      Rot["Target"] = Player.Name
+   end
+end
+
+return Rot
