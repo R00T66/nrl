@@ -58,7 +58,9 @@ local Success, Response, Extra = pcall(function()
         for i, v in pairs(Trinkets) do
             local LDistance = (Camera.CFrame.p - v.Position).magnitude;
             if TrinketAP and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild'Head' and (LocalPlayer.Character.Head.Position - v.Position).magnitude <= 15 and TP[tostring(v.Position)] then
-                fireclickdetector(TP[tostring(v.Position)]);
+               if not LocalPlayer.Character:FindFirstChild'TPSafe' then
+                  fireclickdetector(TP[tostring(v.Position)]);
+               end
             end
             if LDistance < Distance and not shared.Blacklist[v] and v:IsDescendantOf(workspace) then
                 Distance = LDistance;
