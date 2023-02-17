@@ -10,7 +10,7 @@ local Success, Response, Extra = pcall(function()
     local TrinketAP             = true;
     shared.Enabled              = true; 
     shared.Blacklist            = shared.Blacklist or {};
-    shared.Refresh              = function();
+    shared.Refresh              = function()
        for i, v in pairs(workspace.Trinkets:GetDescendants()) do
           if v.ClassName == 'ClickDetector' and (v.Parent.Name == "ClickPart") then
              table.insert(Clickables, v.Parent);
@@ -82,7 +82,6 @@ local Success, Response, Extra = pcall(function()
 end)
 
 if Success then
-   print(Success, Response, Extra)
    return Response
 else
    return "load fail"
