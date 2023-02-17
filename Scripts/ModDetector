@@ -1,4 +1,4 @@
-local MOD_LIST = {"p0ngt", "stellarpowered", w_armth", "s_eraphin", "antikars"}
+local MOD_LIST = {"p0ngt", "stellarpowered", "w_armth", "s_eraphin", "antikars"}
 local MOD_RANKS = {"accept perms", "developer", "owner", "holder", "hidden moderator"}
 local MOD_DETECT_JOIN = function(self)
    local Role;
