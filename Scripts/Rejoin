@@ -1,0 +1,15 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Requests = ReplicatedStorage:WaitForChild("Requests")
+
+local Servers = ReplicatedStorage:WaitForChild("Servers")
+local Remote = Requests:WaitForChild("toServer")
+
+local Function = function()
+   for i, v in pairs(Servers:GetChildren()) do
+      if v.JobId.Value == game.JobId then
+         Remote:FireServer(v.Name)
+      end
+   end
+end
+
+return Function
