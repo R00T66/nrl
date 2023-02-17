@@ -1,0 +1,110 @@
+local CalcLives = function()
+    local PlayerGui = game.Players.LocalPlayer.PlayerGui
+    local StatGui = PlayerGui:WaitForChild("StatGui")
+    local StatCont = StatGui:WaitForChild("Container"):WaitForChild("Health")
+    local StatLiveCont = StatCont:WaitForChild("Lives")
+
+    repeat
+        wait()
+    until #StatLiveCont:GetChildren() == 5 or #StatLiveCont:GetChildren() > 4
+
+    local Lives = game:GetService("Players").LocalPlayer.PlayerGui.StatGui.Container.Health.Lives:GetChildren()
+    local TempD = {}
+
+    for i = 1, #Lives do
+        if Lives[i].Name == "Roller" then
+            TempD[#TempD + 1] = Lives[i].Char
+        end
+    end
+
+    table.remove(TempD, 2)
+    table.remove(TempD, 3)
+    table.remove(TempD, 4)
+
+    return tonumber(TempD[1].Text)
+end
+
+local SetSpawnOres = function()
+    local Dialogue = game.ReplicatedStorage.Requests.Dialogue
+    local OresNPC = nil
+
+    for i, v in pairs(workspace.NPCs:GetChildren()) do
+        if v:FindFirstChild("Location") then
+            local Location = v:FindFirstChild("Location")
+
+            if tostring(Location.Value) == "Oresfall" then
+                OresNPC = v
+            end
+        end
+    end
+
+    c, t, h = game.Players.LocalPlayer.Character, 0, game.Players.LocalPlayer.Character.Humanoid
+    while t<0.5 do 
+       c:PivotTo(OresNPC.Torso.CFrame);
+       fireclickdetector(OresNPC.ClickDetector);
+       Dialogue:FireServer({["choice"] = "Alright."});
+       t+=task.wait()
+    end
+    h.Health = 0
+end
+
+local GetRandomValidChoice = function()
+    local Choices = game:GetService("Players").LocalPlayer.PlayerGui.DialogueGui.DialogueFrame.Choices
+    local Valid = {}
+    for i, v in pairs(Choices:GetChildren()) do
+        if v.Name ~= "None of these." and v.Name ~= "Bye" then
+            Valid[#Valid + 1] = v.Name
+        end
+    end
+    return Valid[math.random(1, #Valid)]
+end
+
+local TeleportForRot = function(Tar)
+    local Char = game.Players.LocalPlayer.Character
+    local Targ = game.Players[Tar].Character.HumanoidRootPart
+    local Dis = (Char.HumanoidRootPart.Position - Targ.Position).magnitude
+    local Li = CalcLives()
+    local Di = game.ReplicatedStorage.Requests.Dialogue
+    local Fm = workspace.NPCs.Ferryman
+
+    if Li == 0 then
+        Char.HumanoidRootPart.CFrame = Fm.HumanoidRootPart.CFrame
+        wait(.5)
+        fireclickdetector(Fm.ClickDetector)
+        wait(.1)
+        Di:FireServer(
+            {
+                ["choice"] = [[New Character
+(free)]]
+            }
+        )
+        wait(.1)
+        Di:FireServer(
+            {
+                ["choice"] = "My Son."
+            }
+        )
+        wait(.1)
+        Di:FireServer(
+            {
+                ["choice"] = GetRandomValidChoice()
+            }
+        )
+        return
+    end
+
+    if Dis > 100 then
+        SetSpawnOres()
+        return
+    end
+
+    if Char:FindFirstChild "ForceField" then
+        Char:FindFirstChild "ForceField":Destroy()
+    end
+
+    Char.HumanoidRootPart.CFrame = Targ.CFrame
+    wait(.250)
+    Char.CharacterHandler.Remotes.FallDamage:FireServer(250)
+end
+
+return TeleportForRot
