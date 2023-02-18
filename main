@@ -1,4 +1,4 @@
--- Core Functions
+-- Core Function
 
 local LoadFunction = function(Http)
    local Success, Response = pcall(game.HttpGet, game, Http)
@@ -39,6 +39,7 @@ local CustomAreas = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/m
 local Artifacts,Scrolls,Candy,EspEnabled = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/TrinketESP")
 local AutoHealthPot = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoHealthPot")
 local AutoPickup = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoPickup")
+local RotTarget = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/RotTarget")
 local AutoSell = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoSell")
 local RotSelf = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/RotSelf")
 local Rejoin = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/Rejoin")
@@ -113,10 +114,14 @@ end)
 
 for i, v in pairs(CustomAreas) do
    Carbon.addButton(TeleportSection1, tostring(i), function(self)
-       AutoPickup.Enabled = false
+       if AutoPickup.Enabled then
+          coroutine.resume(coroutine.create(function()
+              AutoPickup.Enabled = false
+              wait(2)
+              AutoPickup.Enabled = true
+          end))
+       end
        local Boolean = TeleportHandler.Teleport(v)
-       wait(2)
-       AutoPickup.Enabled = true
        if not Boolean then
           game.StarterGui:SetCore("SendNotification", {
             Title = "ERROR",
@@ -147,11 +152,13 @@ end
 -- Rotting
 
 Carbon.addButton(HealerSection1, "Rot Self", function(self)
-    print("!")
+    RotSelf(RotTarget.Target)
 end)
 
-Carbon.addInput(HealerSection1, "Rot Target", function(self)
-    print("!")
+local RT;
+RT = Carbon.addInput(HealerSection1, "Rot Target", function(self)
+    RotTarget.GetTarget(self)
+    RT.setInputText("")
 end)
 
 -- Potions
