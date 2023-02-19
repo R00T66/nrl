@@ -16,6 +16,8 @@ Rot.GetTarget = function(String)
    if Player ~= nil then
       Rot["Target"] = Player.Name
    end
+   
+   return Player.Name:upper()
 end
 
 return Rot
