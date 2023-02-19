@@ -2,14 +2,14 @@ local Drink = { ["RunningPots"] = false, ["BreakPots"] = false }
 local Client = game.Players.LocalPlayer
 
 Drink.DrinkPots = function()
-    RunningPots = true
+    Drink.RunningPots = true
     game.StarterGui:SetCore("SendNotification", {
      Title = "ALERT",
      Text = "STARTED DRINKING!",
      Duration = 10
     })
     for i, v in pairs(Client.Backpack:GetChildren()) do
-        if BreakPots then
+        if Drink.BreakPots then
             break
         end
         if v.Name == "Health Potion" then
@@ -20,17 +20,19 @@ Drink.DrinkPots = function()
             until not Client.Character:FindFirstChild("Health Potion")
         end
     end
-   game.StarterGui:SetCore("SendNotification", {
-     Title = "ALERT",
-     Text = "FINISHED DRINKING!",
-     Duration = 10
-   })
-    BreakPots = false
-    RunningPots = false
+    if not Drink.BreakPots then
+       game.StarterGui:SetCore("SendNotification", {
+         Title = "ALERT",
+         Text = "FINISHED DRINKING!",
+         Duration = 10
+       })
+    end
+    Drink.BreakPots = false
+    Drink.RunningPots = false
 end
 
 Drink.BreakPotsF = function()
-   BreakPots = true
+   Drink.BreakPots = true
    game.StarterGui:SetCore("SendNotification", {
      Title = "ALERT",
      Text = "STOPPING DRINKING!",
