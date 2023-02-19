@@ -1,5 +1,11 @@
 -- Core Function
 
+game.StarterGui:SetCore("SendNotification", {
+  Title = "ALERT",
+  Text = "LOADING PLEASE WAIT!",
+  Duration = 5
+})
+
 local LoadFunction = function(Http)
    local Success, Response = pcall(game.HttpGet, game, Http)
    
@@ -229,3 +235,9 @@ end)
 -- Version
 
 warn("Version | OPEN RELEASE | V1")
+
+game.StarterGui:SetCore("SendNotification", {
+  Title = "ALERT",
+  Text = "DONE LOADING!",
+  Duration = 5
+})
