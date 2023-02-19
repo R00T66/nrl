@@ -1,4 +1,5 @@
 local Drink = { ["RunningPots"] = false, ["BreakPots"] = false }
+local Client = game.Players.LocalPlayer
 
 Drink.DrinkPots = function()
     RunningPots = true
