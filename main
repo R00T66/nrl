@@ -167,8 +167,18 @@ end)
 
 local RT;
 RT = Carbon.addInput(HealerSection1, "Rot Target", function(self)
-    RotTarget.GetTarget(self)
+    local RotTargetName = RotTarget.GetTarget(self)
     RT.setInputText("")
+    
+    if RotTargetName == nil then
+       return
+    end
+    
+    game.StarterGui:SetCore("SendNotification", {
+      Title = "SUCCESS",
+      Text = "TARGET IS NOW " .. RotTargetName,
+      Duration = 10
+    })
 end)
 
 -- Potions
