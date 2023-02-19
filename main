@@ -142,10 +142,13 @@ end
 
 for i, v in pairs(Areas) do
    Carbon.addButton(TeleportSection2, tostring(i), function(self)
-       AutoPickup.Enabled = false
-       local Boolean = TeleportHandler.Teleport(v)
-       wait(2)
-       AutoPickup.Enabled = true
+       if AutoPickup.Enabled then
+          coroutine.resume(coroutine.create(function()
+              AutoPickup.Enabled = false
+              wait(2)
+              AutoPickup.Enabled = true
+          end))
+       end
        if not Boolean then
           game.StarterGui:SetCore("SendNotification", {
             Title = "ERROR",
