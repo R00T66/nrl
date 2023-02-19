@@ -1,0 +1,29 @@
+local Drink = { ["RunningPots"] = false, ["BreakPots"] = false }
+
+Drink.DrinkPots = function()
+    RunningPots = true
+    for i, v in pairs(Client.Backpack:GetChildren()) do
+        if BreakPots then
+            break
+        end
+        if v.Name == "Health Potion" then
+            v.Parent = Client.Character
+            repeat
+                wait()
+                v:Activate()
+            until not Client.Character:FindFirstChild("Health Potion")
+        end
+    end
+    BreakPots = false
+    RunningPots = false
+end
+
+Drink.BreakPotsF = function()
+   BreakPots = true
+end
+
+Drink.RunningPotsF = function()
+   return Drink.RunningPots
+end
+
+return Drink
