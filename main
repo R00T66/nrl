@@ -37,6 +37,7 @@ local ModDetector = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/m
 local TeleportHandler = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/TeleportHandler")
 local CustomAreas = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/CustomTeleports")
 local Artifacts,Scrolls,Candy,EspEnabled = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/TrinketESP")
+local AutoHPPotDrink = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoHealthPotionDrinkX")
 local AutoHealthPot = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoHealthPot")
 local AutoPickup = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/AutoPickup")
 local RotTarget = LoadFunction("https://raw.githubusercontent.com/R00T66/nrl/main/Scripts/RotTarget")
@@ -168,17 +169,51 @@ Carbon.addButton(HealerSection2, "Auto Health Potion", function(self)
 end)
 
 Carbon.addButton(HealerSection2, "Auto Health Potion Drink", function(self)
-    print("!")
+    local Table = AutoHPPotDrink
+    
+    if Table.RunningPotsF() then
+       Table.BreakPotsF()
+    else 
+       Table.DrinkPots()
+    end
 end)
 
 -- Teleports (Healer)
 
 Carbon.addButton(HealerSection3, "Super Class", function(self)
-    TeleportHandler.Teleport(CFrame.new(Vector3.new(-422.22674560546875, 270.4999084472656, 1041.569091796875)))
+    if AutoPickup.Enabled then
+       coroutine.resume(coroutine.create(function()
+            AutoPickup.Enabled = false
+            wait(2)
+            AutoPickup.Enabled = true
+       end))
+    end
+    local Boolean = TeleportHandler.Teleport(CFrame.new(Vector3.new(-422.22674560546875, 270.4999084472656, 1041.569091796875)))
+    if not Boolean then
+        game.StarterGui:SetCore("SendNotification", {
+          Title = "ERROR",
+          Text = "MUST GATE FIRST!",
+          Duration = 5
+        })
+    end
 end)
 
 Carbon.addButton(HealerSection3, "Ultra Class", function(self)
-    TeleportHandler.Teleport(CFrame.new(Vector3.new(6095.8310546875, 1416.49365234375, 126.3079605102539)))
+    if AutoPickup.Enabled then
+       coroutine.resume(coroutine.create(function()
+            AutoPickup.Enabled = false
+            wait(2)
+            AutoPickup.Enabled = true
+       end))
+    end
+    local Boolean = TeleportHandler.Teleport(CFrame.new(Vector3.new(6095.8310546875, 1416.49365234375, 126.3079605102539)))
+    if not Boolean then
+        game.StarterGui:SetCore("SendNotification", {
+          Title = "ERROR",
+          Text = "MUST GATE FIRST!",
+          Duration = 5
+        })
+    end
 end)
 
 -- Misc
@@ -190,3 +225,7 @@ end)
 Carbon.addButton(MiscSection, "Wipe", function(self)
     Wipe()
 end)
+
+-- Version
+
+warn("Version | OPEN RELEASE | V1")
