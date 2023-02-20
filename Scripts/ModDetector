@@ -4,7 +4,7 @@ local MOD_DETECT_JOIN = function(self)
    local Role;
    
    pcall(function(...)
-       Role = game:GetService("Players").LocalPlayer:GetRoleInGroup(10569041)
+       Role = self:GetRoleInGroup(10569041)
    end) 
    
    if table.find(MOD_LIST, self.Name:lower()) then
@@ -12,7 +12,6 @@ local MOD_DETECT_JOIN = function(self)
    end
    
    if Role ~= nil then
-      warn(Role:lower())
       if table.find(MOD_RANKS, Role:lower()) then
          local Sound = Instance.new("Sound")
          Sound.SoundId = "rbxassetid://1283290053"
@@ -35,7 +34,7 @@ local MOD_DETECT_LEAVE = function(self)
    local Role;
    
    pcall(function(...)
-       Role = game:GetService("Players").LocalPlayer:GetRoleInGroup(10569041)
+       Role = self:GetRoleInGroup(10569041)
    end) 
    
    if table.find(MOD_LIST, self.Name:lower()) then
@@ -66,5 +65,7 @@ game:GetService("Players").PlayerAdded:Connect(MOD_DETECT_JOIN)
 game:GetService("Players").PlayerRemoving:Connect(MOD_DETECT_LEAVE)
 
 for i, Player in pairs(game:GetService("Players"):GetPlayers()) do
-   MOD_DETECT_JOIN(Player)
+   pcall(function(...)
+       MOD_DETECT_JOIN(Player)
+   end)
 end
